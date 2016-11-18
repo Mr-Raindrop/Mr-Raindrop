@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.client {
+				position: relative;
+				margin: 20px auto;
+				width: 80%;
+				height: 380px;
+				border: 1px solid #ccc;
+				overflow: hidden;
+			}
+			
+			.content {
+				text-align: center;
+			}
+			
+			.s_txt {
+				padding-left: 15px;
+				width: 384px;
+				height: 34px;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+			}
+			/*.btn {
+				clear: both;
+			}*/
+			
+			.s_sub,
+			.s_del {
+				width: 159px;
+				height: 35px;
+				text-align: center;
+				line-height: 35px;
+				font-size: 14px;
+				color: #e65000;
+				border: 1px solid #e6501e;
+				border-radius: 3px;
+				background: #fff;
+			}
+			
+			.s_del {
+				color: #ccc;
+				border: 1px solid #ccc;
+			}
+			
+			.string {
+				position: absolute;
+				color: #000;
+				font-size: 22px;
+				line-height: 36px;
+				font-weight: 500;
+				cursor: pointer;
+				word-break:keep-all;
+				white-space:nowrap; 
+			}
+			
+			.pop {
+				margin: 10px auto;
+				width: 430px;
+				height: 38px;
+			}
+			
+			.pop a {
+				margin-top: 5px;
+				margin-right: 5px;
+				display: inline-block;
+				float: left;
+				width: 18px;
+				height: 20px;
+				text-indent: -9999px;
+				background: url(images/9b7627e9fd1bcb439d81a9d076062035.png) no-repeat -232px -20px;
+			}
+			
+			.pop a:hover {
+				background-position: -251px -20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrap">
+			<div class="client" id="client">
+
+			</div>
+			<div class="content">
+
+				<div class="pop">
+
+					<a href="javascript:;">弹幕颜色</a>
+
+					<input type="text" placeholder="说点什么吧？" class="s_txt" required="required">
+				</div>
+				<div class="btn">
+					<input type="button" value="发 射" class="s_sub">
+					<input type="button" value="清 屏" class="s_del">
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var Window = document.getElementById("client");
+		var Txt = document.getElementsByClassName("s_txt")[0];
+		var Btn = document.getElementsByClassName("s_sub")[0];
+		var Del = document.getElementsByClassName("s_del")[0];
+		var pageH = Window.offsetHeight;
+		var pageW = Window.offsetWidth;
+		var color = ["#dc6a4e", "#d7ff32", "#000", "#e65000", "#ff3b0b", "#3209D8", "#FF0BCF", "#58DEFF"];
+		var Top=10;
+		Btn.onclick = function() {
+
+			launch()
+		}
+		Txt.onkeydown = function(e) {
+			var oEvent = e || event;
+			if(oEvent.keyCode == 13) {
+				launch()
+			}
+		}
+
+		function launch() {
+			var num = parseInt(color.length * (Math.random()));
+			var texts = Txt.value;
+			var Div = document.createElement("div");
+			Div.className = "string";
+			if(Txt.value == null || Txt.value == "") {
+				alert("不能发送空消息")
+			}
+			
+				Div.innerText = Txt.value;
+				Div.style.color = color[num];
+			
+			Txt.value = ""
+			Window.appendChild(Div);
+			
+			Top =Top+10
+			if(Top > pageH - 50) {
+				Top =10;
+			}
+			Div.style.top = Top + "px";
+			var oDiv= Window.getElementsByTagName("div");
+			var lastDiv=oDiv[oDiv.length-1]
+			console.log(oDiv.length)
+			console.log(lastDiv.innerText)
+			lastDiv.timer=null;
+			var Left = lastDiv.offsetWidth;
+			
+			lastDiv.style.left =pageW + "px";
+			clearInterval(lastDiv.timer);
+			lastDiv.timer = setInterval(function() {
+				if(lastDiv.style.left<=(-Left)) {
+					clearInterval(lastDiv.timer)
+
+				} else {
+					lastDiv.style.left =lastDiv.offsetLeft- 10 + "px"
+				}
+			}, 90)
+
+		}
+	</script>
+
+</html>
